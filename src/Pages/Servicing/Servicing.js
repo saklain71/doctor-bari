@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import './Servicing.css'
 
 const Servicing = (props) => {
-    const {name, img, description , price} = props.servicing;
-   const navigate = useNavigate();
-    const handlerCheckOut = event =>{
-       navigate("/checkout");
+    const {id,name, img, description , price} = props.servicing;
+
+    const navigate = useNavigate();
+
+    const handlerDetails = id => {
+       navigate(`/services/${id}`);
    }
     return (
         <div className='servicing-container'>
@@ -14,7 +16,7 @@ const Servicing = (props) => {
             <h2>Name : {name}</h2>
             <p>Price: ${price}</p>
             <p>Description: {description}</p>
-            <button onClick={handlerCheckOut} className='btn bg-info mx-auto d-block'>Check Out</button>
+            <button onClick={ () => handlerDetails(id) } className='btn bg-info mx-auto d-block'>Details {name}</button>
             
         </div>
     );
