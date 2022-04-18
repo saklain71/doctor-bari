@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "name": "Dentist",
+        "name": "Mental Health",
         "img": "https://i.ibb.co/0ndvFzr/sergery.jpg",
         "price":1000,
         "description": "This is very importnat for our health"
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "name": "Dentist",
+        "name": "Serjery",
         "img": "https://i.ibb.co/s2RSMVf/insuline.jpg",
         "price":1000,
         "description": "This is very importnat for our health"
