@@ -2,41 +2,41 @@
     {
         "id": 1,
         "name": "Dentist",
-        "img": "",
+        "img": "https://i.ibb.co/0ndvFzr/sergery.jpg",
         "price":1000,
-        "descriptio": "This is very importnat for our health"
+        "description": "This is very importnat for our health"
 
     },
     {
-        "id": 1,
+        "id": 2,
         "name": "Dentist",
-        "img": "",
+        "img": "https://i.ibb.co/s2RSMVf/insuline.jpg",
         "price":1000,
-        "descriptio": "This is very importnat for our health"
+        "description": "This is very importnat for our health"
 
     },
     {
-        "id": 1,
+        "id": 3,
         "name": "Dentist",
-        "img": "",
+        "img": "https://i.ibb.co/X4qzTX5/medicine.jpg",
         "price":1000,
-        "descriptio": "This is very importnat for our health"
+        "description": "This is very importnat for our health"
 
     },
     {
-        "id": 1,
+        "id": 4,
         "name": "Dentist",
-        "img": "",
+        "img": "https://i.ibb.co/7gPnqt5/mentalhealth.jpg",
         "price":1000,
-        "descriptio": "This is very importnat for our health"
+        "description": "This is very importnat for our health"
 
     },
     {
-        "id": 1,
+        "id": 5,
         "name": "Dentist",
-        "img": "",
+        "img": "https://i.ibb.co/QKQwQhg/takecare.jpg",
         "price":1000,
-        "descriptio": "This is very importnat for our health"
+        "description": "This is very importnat for our health"
 
     }
     
