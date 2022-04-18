@@ -24,12 +24,12 @@ const Registered = () => {
   
     const navigate = useNavigate();
       
-    useEffect(()=>{
+
         if(user){
             navigate('/home');
+            
         }
-    },[]);
-
+   
     const handlerName = event =>{
         setDisplayName(event.target.value);
     }
@@ -51,6 +51,9 @@ const Registered = () => {
       const handleSubmit = (event) =>{
         event.preventDefault();   
         createUserWithEmailAndPassword(email,password);
+        setEmail('');
+        setPassword('');
+        alert('registerd');
         console.log(email, password);
     }
 

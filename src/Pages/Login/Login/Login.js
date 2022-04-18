@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useAuthState, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { useNavigate } from 'react-router-dom';
+import {  useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../../firebase.init';
 import SocialLogin from '../SocialLogin/SocialLogin';
 
@@ -10,10 +10,13 @@ import SocialLogin from '../SocialLogin/SocialLogin';
 
 const Login = () => {
 
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const location = useLocation();
+    let from = location.state?.from?.pathname || '/' ;
 
     const navigate = useNavigate();
+  
     const [
         signInWithEmailAndPassword,
         user,
@@ -21,27 +24,26 @@ const Login = () => {
         error,
     ] = useSignInWithEmailAndPassword(auth);
 
-    useEffect(() => {
-        if (user) {
-            navigate('/home');
-        }
-    }, [user])
+   
+    
 
-    const handlerEmail = e => {
-        setEmail(e.target.value);
+    const handlerEmail = event => {
+        setEmail(event.target.value);
     }
-    const handlerPassword = e => {
-        setPassword(e.target.value);
+    const handlerPassword = event => {
+        setPassword(event.target.value);
     }
-
 
     const loginSubmit = event => {
-
         event.preventDefault();
-        signInWithEmailAndPassword(email, password)
+        signInWithEmailAndPassword(email, password);
+        console.log(email , password);
 
     }
-
+   
+    if (user) {
+        navigate(from , {replace : true});
+    }
     const handlerRegister = event => {
         navigate('/register');
     }
@@ -52,12 +54,12 @@ const Login = () => {
             <div className='container ms-auto w-50 mb-5 mt-5'>
                 <Form onSubmit={loginSubmit}>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Control onClick={handlerEmail} type="email" placeholder="Enter email" required />
+                        <Form.Control onBlur={handlerEmail} type="email" placeholder="Enter email" required />
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
 
-                        <Form.Control onClick={handlerPassword} type="password" placeholder="Password" required />
+                        <Form.Control onBlur={handlerPassword} type="password" placeholder="Password" required />
                     </Form.Group>
 
                     <Button className='w-100' variant="primary" type="submit">

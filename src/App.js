@@ -5,6 +5,7 @@ import Blogs from "./Pages/Blogs/Blogs";
 import CheckOut from "./Pages/CheckOut/CheckOut";
 import Home from "./Pages/Home/Home";
 import Login from "./Pages/Login/Login/Login";
+import RequireAuth from "./Pages/Login/Login/RequireAuth/RequireAuth";
 import Registered from "./Pages/Login/Registered/Registered";
 import ServiceDetails from "./Pages/ServiceDetails/ServiceDetails";
 import Footer from "./Pages/Shared/Footer/Footer";
@@ -20,7 +21,11 @@ function App() {
         <Route path="/home" element={<Home></Home>}></Route>
         <Route path="/banner" element={<Banner></Banner>}></Route>
         <Route path="/services/:serviceId" element={<ServiceDetails></ServiceDetails>} ></Route>
-        <Route path="/checkout" element={<CheckOut></CheckOut>}></Route>
+        <Route path="/checkout" element={
+          <RequireAuth>
+            <CheckOut></CheckOut>
+          </RequireAuth>
+        }></Route>
         <Route path="/blogs" element={<Blogs></Blogs>}></Route>
         <Route path="/about" element={<About></About>}></Route>
         <Route path="/login" element={<Login></Login>}></Route>
