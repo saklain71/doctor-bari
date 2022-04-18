@@ -3,6 +3,7 @@ import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import  auth  from '../../../firebase.init';
+import SocialLogin from '../SocialLogin/SocialLogin';
 
 
 const Registered = () => {
@@ -12,12 +13,7 @@ const Registered = () => {
     const [password, setPassword] = useState('');
     const [conPassword, setConPassword] = useState('');
 
-    
-    useEffect(()=>{
-        if(user){
-            navigate('/home');
-        }
-    },[user]);
+  
 
     const [
         createUserWithEmailAndPassword,
@@ -27,6 +23,12 @@ const Registered = () => {
       ] = useCreateUserWithEmailAndPassword(auth); 
   
     const navigate = useNavigate();
+      
+    useEffect(()=>{
+        if(user){
+            navigate('/home');
+        }
+    },[]);
 
     const handlerName = event =>{
         setDisplayName(event.target.value);
@@ -37,10 +39,10 @@ const Registered = () => {
     const handlerPassword = event =>{
         setPassword(event.target.value);
     }
-    // const handlerConPassword = event =>{
-    //     setConPassword(event.target.value);
-    // }
-
+    const handlerConPassword = event =>{
+       setConPassword(event.target.value);
+    }
+ 
  
     if(error){
         console.error(error.message);
@@ -49,7 +51,6 @@ const Registered = () => {
       const handleSubmit = (event) =>{
         event.preventDefault();   
         createUserWithEmailAndPassword(email,password);
-        alert('Updated profile');
         console.log(email, password);
     }
 
@@ -78,11 +79,12 @@ const Registered = () => {
 
                         <Form.Control  onBlur={handlerPassword} type="password" placeholder="Password"  />
                     </Form.Group>
+                
 
-                    {/* <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
 
                         <Form.Control onBlur={handlerConPassword} type="password" placeholder="Confirm Password" required />
-                    </Form.Group> */}
+                    </Form.Group>
 
 
                     <Button  className='w-100' variant="primary" type="submit">
@@ -92,6 +94,7 @@ const Registered = () => {
             
                 <p className='mt-2'>Already Have an Account ? <button onClick={handlerLogin} className='btn bg-primary text-white'>Login Please</button></p>
             </div>
+            <SocialLogin></SocialLogin>
 
         </div>
     );
