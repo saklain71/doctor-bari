@@ -2,75 +2,79 @@ import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import  auth  from '../../../firebase.init';
+import auth from '../../../firebase.init';
 import SocialLogin from '../SocialLogin/SocialLogin';
 import { useUpdateProfile } from 'react-firebase-hooks/auth';
 import Loading from '../../Shared/Loading/Loading';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Registered = () => {
 
     const [name, setDisplayName] = useState('');
-    const [email , setEmail] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [conPassword, setConPassword] = useState('');
+    const navigate = useNavigate();
+    let passUnmatcedWarn;
 
     const [
         createUserWithEmailAndPassword,
         user,
         loading,
         error,
-      ] = useCreateUserWithEmailAndPassword(auth); 
+    ] = useCreateUserWithEmailAndPassword(auth);
 
-      const [updateProfile, updating] = useUpdateProfile(auth);
-  
-    const navigate = useNavigate();
-      
+    const [updateProfile, updating] = useUpdateProfile(auth);
 
-        if(user){
-            navigate('/home');
-            
-        }
-        if(loading || updating){
-            return <Loading></Loading>
-        }
-   
-    const handlerName = event =>{
+    const handlerName = event => {
         setDisplayName(event.target.value);
     }
-    const handlerEmail = event =>{
+    const handlerEmail = event => {
         setEmail(event.target.value);
     }
-    const handlerPassword = event =>{
+    const handlerPassword = event => {
         setPassword(event.target.value);
     }
-    const handlerConPassword = event =>{
-       setConPassword(event.target.value);
+    const handlerConPassword = event => {
+        setConPassword(event.target.value);
     }
- 
- 
-    if(error){
-        console.error(error.message);
+    if (user) {
+        navigate('/home');
+
+    }
+    if (loading || updating) {
+        return <Loading></Loading>
     }
 
-      const handleSubmit = async(event) =>{
-        event.preventDefault();   
-        await createUserWithEmailAndPassword(email,password);
-        await updateProfile({name})
-        alert("Updated")
+    if (error) {
+        console.error(error.message);
+    }
+    if (password !== conPassword){
+        setPassword("");
+        setConPassword("");
+        passUnmatcedWarn = <p>Password not matched</p>
+    }
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        await createUserWithEmailAndPassword(email, password);
+        await updateProfile({ name })
         setEmail('');
         setPassword('');
 
-    
+
     }
 
- 
+
     const handlerLogin = () => {
         navigate('/login');
 
     }
 
 
-    
+
     return (
         <div>
             <h1 className='text-center text-primary mt-2'>Please Register Here</h1>
@@ -86,9 +90,9 @@ const Registered = () => {
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
 
-                        <Form.Control  onBlur={handlerPassword} type="password" placeholder="Password"  />
+                        <Form.Control onBlur={handlerPassword} type="password" placeholder="Password" />
                     </Form.Group>
-                
+
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
 
@@ -96,14 +100,16 @@ const Registered = () => {
                     </Form.Group>
 
 
-                    <Button  className='w-100' variant="primary" type="submit">
+                    <Button className='w-100' variant="primary" type="submit">
                         Register
                     </Button>
                 </Form>
-            
+                
+
                 <p className='mt-2'>Already Have an Account ? <button onClick={handlerLogin} className='btn bg-primary text-white'>Login Please</button></p>
             </div>
             <SocialLogin></SocialLogin>
+            <ToastContainer></ToastContainer>
 
         </div>
     );
