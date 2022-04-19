@@ -1,4 +1,4 @@
-import React, {  useRef, useState } from 'react';
+import React, {  useEffect, useRef, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import {  useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -23,6 +23,7 @@ const Login = () => {
   
     let errorElement;
     let from = location.state?.from?.pathname || '/' ;
+    
 
     const navigate = useNavigate();
   
@@ -33,7 +34,12 @@ const Login = () => {
         error,
     ] = useSignInWithEmailAndPassword(auth);
 
-   
+   useEffect(()=>{
+
+    if (user) {
+        navigate(from , {replace : true});
+    }
+   })
     
 
     const handlerEmail = event => {
@@ -67,9 +73,8 @@ const Login = () => {
         errorElement = <p>Not finding email password matched</p>
     }
    
-    if (user) {
-        navigate(from , {replace : true});
-    }
+   
+    
     const handlerRegister = event => {
         navigate('/register');
     }
