@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import  auth  from '../../../firebase.init';
 import SocialLogin from '../SocialLogin/SocialLogin';
-
+import { useUpdateProfile } from 'react-firebase-hooks/auth';
+import Loading from '../../Shared/Loading/Loading';
 
 const Registered = () => {
 
@@ -13,14 +14,14 @@ const Registered = () => {
     const [password, setPassword] = useState('');
     const [conPassword, setConPassword] = useState('');
 
-  
-
     const [
         createUserWithEmailAndPassword,
         user,
         loading,
         error,
       ] = useCreateUserWithEmailAndPassword(auth); 
+
+      const [updateProfile, updating] = useUpdateProfile(auth);
   
     const navigate = useNavigate();
       
@@ -28,6 +29,9 @@ const Registered = () => {
         if(user){
             navigate('/home');
             
+        }
+        if(loading || updating){
+            return <Loading></Loading>
         }
    
     const handlerName = event =>{
@@ -48,13 +52,15 @@ const Registered = () => {
         console.error(error.message);
     }
 
-      const handleSubmit = (event) =>{
+      const handleSubmit = async(event) =>{
         event.preventDefault();   
-        createUserWithEmailAndPassword(email,password);
+        await createUserWithEmailAndPassword(email,password);
+        await updateProfile({name})
+        alert("Updated")
         setEmail('');
         setPassword('');
-        alert('registerd');
-        console.log(email, password);
+
+    
     }
 
  
