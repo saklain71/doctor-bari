@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-
+import './ServiceDetails.css'
 const ServiceDetails = () => {
     const {serviceId} = useParams();
     console.log(serviceId);
     return (
-        <div>
+        <div className='serviceDetails-container'>
             <h1 className='text-center'>Know more About {serviceId}</h1>
             <h3> </h3>
             <div className='text-center'>

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword, useSendEmailVerification } from 'react-firebase-hooks/auth';
 import auth from '../../../firebase.init';
 import SocialLogin from '../SocialLogin/SocialLogin';
 import { useUpdateProfile } from 'react-firebase-hooks/auth';
 import Loading from '../../Shared/Loading/Loading';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 
 
 const Registered = () => {
@@ -17,7 +18,7 @@ const Registered = () => {
     const [password, setPassword] = useState('');
     const [conPassword, setConPassword] = useState('');
     const navigate = useNavigate();
-    let passUnmatcedWarn;
+   
 
     const [
         createUserWithEmailAndPassword,
@@ -27,6 +28,10 @@ const Registered = () => {
     ] = useCreateUserWithEmailAndPassword(auth);
 
     const [updateProfile, updating] = useUpdateProfile(auth);
+
+    const [sendEmailVerification, sending, errorVarified] = useSendEmailVerification(
+        auth
+      );
 
     const handlerName = event => {
         setDisplayName(event.target.value);
@@ -44,23 +49,28 @@ const Registered = () => {
         navigate('/home');
 
     }
-    if (loading || updating) {
+    if (loading || updating || sending) {
         return <Loading></Loading>
     }
 
     if (error) {
         console.error(error.message);
     }
-    if (password !== conPassword){
-        setPassword("");
-        setConPassword("");
-        passUnmatcedWarn = <p>Password not matched</p>
-    }
+   
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        await createUserWithEmailAndPassword(email, password);
-        await updateProfile({ name })
+        if (password === conPassword){
+            await createUserWithEmailAndPassword(email, password);
+            await updateProfile({ name })
+            await sendEmailVerification(email);
+            
+        }
+        
+        else{
+            toast.error("password doesn't match");
+        }
+
         setEmail('');
         setPassword('');
 
@@ -81,7 +91,7 @@ const Registered = () => {
             <div className='mx-auto w-50'>
                 <Form onSubmit={handleSubmit} >
                     <Form.Group className="mb-3" controlId="formBasicName">
-                        <Form.Control onBlur={handlerName} type="name" placeholder="Enter Name" required />
+                        <Form.Control onBlur={handlerName} type="name"  placeholder = "Enter Name" required />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
 
